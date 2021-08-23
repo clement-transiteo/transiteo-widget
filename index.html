@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Transiteo Widget</title>
+  <script defer="defer" src="transiteo-widget.min.js"></script>
+</head>
+
+<body style="background-color: bisque;">
+	<transiteo-widget id="widget-transiteo-welcome" location="br" apikey="HHBJFFEEDICGBukkpEztbeOpQCIJ04faOQmfZn8X"
+		autoopen="true"></transiteo-widget>
+	<transiteo-widget id="widget-transiteo-other-duty" location="bl" apikey="HHBJFFEEDICGBukkpEztbeOpQCIJ04faOQmfZn8X"
+		autoopen="true"></transiteo-widget>
+	<transiteo-widget id="widget-transiteo-duty" location="tr" apikey="HHBJFFEEDICGBukkpEztbeOpQCIJ04faOQmfZn8X"
+		autoopen="true"></transiteo-widget>
+
+	<script>
+    // With SKU - Precise calculation
+    const products = {
+		currency: "USD",
+		guestCurrency: false,
+		products: [
+			{
+				sku: "001-1-1",
+				unit_price: 139.99,
+				quantity: 5
+			},
+			{
+				sku: "001-1-2",
+				unit_price: 119.99,
+				quantity: 1
+			},
+			{
+				sku: "001-1-3",
+				unit_price: 1199.99,
+				quantity: 5
+			}
+		]
+    };
+
+    // Without SKU - Calculation with hscode_default
+    const products_other_duty = {
+		currency: "USD",
+		guestCurrency: false,
+		products: [
+			{
+				unit_price: 12.99,
+				quantity: 3,
+				weight: 3,
+				weight_unit: "kg"
+			},
+			{
+				unit_price: 50.00,
+				quantity: 1000,
+				weight: 450,
+				weight_unit: "kg"
+			}
+		]
+    };
+
+    const widgetDuty = document.getElementById('widget-transiteo-duty');
+    const widgetOtherDuty = document.getElementById('widget-transiteo-other-duty');
+    const widgetWelcome = document.getElementById('widget-transiteo-welcome');
+
+    const timeoutDuty = setTimeout(() => {
+		// the widget is ready (we retrieved the user info (country + currency) and the available countries)
+		widgetDuty.isReady().then(isDisplayed => {
+			clearTimeout(timeoutDuty);
+			// the widget is displayed (the merchant has landed cost OR the user is in one of the available countries)
+			if (isDisplayed) {
+				console.log(`USER COUNTRY --> ${widgetDuty.getToCountry()}`);
+				console.log(`USER COUNTRY CURRENCY --> ${widgetDuty.getToCountryCurrency()}`);
+				widgetDuty.displayDuty(products);
+			} else {
+				console.warn('WIDGET IS NOT DISPLAYED');
+			}
+		});
+    }, 1000);
+
+    const timeoutOtherDuty = setTimeout(() => {
+		// the widget is ready (we retrieved the user info (country + currency) and the available countries)
+		widgetOtherDuty.isReady().then(isDisplayed => {
+			clearTimeout(timeoutOtherDuty);
+			// the widget is displayed (the merchant has landed cost OR the user is in one of the available countries)
+			if (isDisplayed) {
+				console.log(`USER COUNTRY --> ${widgetOtherDuty.getToCountry()}`);
+				console.log(`USER COUNTRY CURRENCY --> ${widgetOtherDuty.getToCountryCurrency()}`);
+				widgetOtherDuty.displayDuty(products_other_duty);
+			} else {
+				console.warn('WIDGET IS NOT DISPLAYED');
+			}
+		});
+    }, 1000);
+
+    const timeoutWelcome = setTimeout(() => {
+		// the widget is ready (we retrieved the user info (country + currency) and the available countries)
+		widgetWelcome.isReady().then(isDisplayed => {
+			clearTimeout(timeoutWelcome);
+			// the widget is displayed (the merchant has landed cost OR the user is in one of the available countries)
+			if (isDisplayed) {
+				console.log(`USER COUNTRY --> ${widgetWelcome.getToCountry()}`);
+				console.log(`USER COUNTRY CURRENCY --> ${widgetWelcome.getToCountryCurrency()}`);
+				widgetWelcome.displayWelcome();
+			} else {
+				console.warn('WIDGET IS NOT DISPLAYED');
+			}
+      	});
+    }, 1000);</script>
+</body>
+
+</html>
